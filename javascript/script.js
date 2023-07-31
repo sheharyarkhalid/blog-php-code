@@ -118,4 +118,35 @@
                 },
               ],
             });
+         
+         
+        
+              $("#search_button").click(function(e){
+                e.preventDefault();
+                var data = $("#search_input").val();
+                var action="search_post";
+                $.ajax({
+                  type: "GET",
+                  url: "./php-files/function.php",
+                  data:{"action": action, "data" : data},
+                  success:function (data) {
+                    var response = JSON.parse(data);
+                    if(response.success == true){
+                      console.log(data);
+                      $('.category_page_alert').addClass('show');
+                      $('.category_page_alert p').text('Article Deleted !');
+                      setTimeout(function() {
+                        $('.category_page_alert').removeClass('show');
+                        $("#row"+val).fadeOut();
+                        $("#row"+val).remove();
+                      }, 3000);
+                   
+                    }
+          
+                  } 
+                }); 
+            });
+          
+         
+         
           });

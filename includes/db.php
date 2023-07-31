@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 
 $db['host_name']="localhost";
 $db['user_name']="root";
-$db['user_pass']="password";
+$db['user_pass']="";
 $db['database']="blog_cms";
 
 

@@ -45,28 +45,59 @@ include('./php-files/function.php');
 
 </head>
 
-<?php 
+<?php
 
-$slug=$_GET['slug'];
-if($slug == ''){
-    header('Location:index.php');
+if(isset($_POST['submit_article_comment'])){
+    $responce=add_article_comment($db_conn,$_POST);
+
+    if ($responce == '1' || $responce == 'true') {
+
+        ?>
+            <script>
+              $(document).ready(function() {
+                $('.category_page_alert').addClass('show');
+                $('.category_page_alert p').text('Comment added. it will show when admin aprove !');
+                setTimeout(function() {
+                  $('.category_page_alert').removeClass('show');
+                }, 4000);
+        
+              });
+            </script>
+        
+          <?php } else {
+          }
+        
+          //  echo $responce;
+        
 
 }
+
+$slug = $_GET['slug'];
+if ($slug == '') {
+    header('Location:index.php');
+}
 //echo $slug;
-$res_single_art=get_single_art_data($db_conn,$slug);
+$res_single_art = get_single_art_data($db_conn, $slug);
 
- $final_date=date("F j, Y", strtotime($res_single_art['date']));
+$final_date = date("F j, Y", strtotime($res_single_art['date']));
 
-$img_value=$res_single_art['arr_main_img'];
+$img_value = $res_single_art['arr_main_img'];
 $art_desc =  json_decode($res_single_art['article_des'], true);
-$final_art_des= urldecode($art_desc['html']);
+$final_art_des = urldecode($art_desc['html']);
 
 // echo $final_date;
 // echo '<pre>';
- //print_r($final_art_des);
+//print_r($final_art_des);
 //echo $art_desc;
 
 ?>
+
+<div class="alert alert-success alert-dismissible fade category_page_alert" role="alert">
+    <p></p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 
 
 <div class="single_article_parent">
@@ -97,16 +128,74 @@ $final_art_des= urldecode($art_desc['html']);
                     <a class="whatsapp"><i class="fab fa-whatsapp " aria-hidden="true"></i></a>
                 </div>
                 <div class="single_article_main_img">
-                  <figure>
-                    <?php  echo "<img src='admin/$img_value'>" ?> 
-                </figure>
+                    <figure>
+                        <?php echo "<img src='admin/$img_value'>" ?>
+                    </figure>
                 </div>
                 <div class="single_article_main_detail">
-                  <?php echo $final_art_des ?>
+                    <?php echo $final_art_des ?>
                 </div>
+
+                <div class="article_coment_section">
+
+                    <section class="blog_section_one">
+
+                        <form method="POST" >
+                            <div class="blog_page_form_content">
+
+                                <div class="blog_form_fields">
+                                    <span>Author Name</span>
+                                    <input type="text" placeholder="Enter your full name" required="" name="name" value="" />
+
+                                </div>
+
+
+                                <div class="blog_form_fields">
+                                    <span>Email</span>
+                                    <input type="text" placeholder="Enter your email address" required="" name="email" value="" />
+
+                                </div>
+
+                                <div class="blog_form_fields">
+                                    <span>Message</span>
+                                    <textarea placeholder="Type your message here..." cols="20" rows="4" name="message" required></textarea>
+
+                                </div>
+                                <input type="hidden" name="article_id" value="<?php echo $res_single_art['article_id'] ; ?>" />
+
+
+                                <div class="blog_form_submit_btn">
+                                    <button id="article_comment" name="submit_article_comment" type="submit">
+
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </section>
+
+
+
+
+
+                </div>
+
             </div>
 
-            <div class=""></div>
+            <div class="">
+
+                <div class="search_bar_section">
+
+                    <form>
+                        <input type="search" id="search_input" placeholder="Search" aria-label="Search">
+                        <button id="search_button" type="submit">Search</button>
+                    </form>
+
+                </div>
+
+            </div>
 
 
         </div>
